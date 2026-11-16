@@ -1,0 +1,224 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	background: #0b1a2a;
+	font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* Long-press must never select text or open the iOS copy callout: holding the ground grows the tree. */
+html, body, .scene-wrap, #stage, #scene, #title, #hint, #coach, #seasons, .chip {
+	-webkit-user-select: none;
+	user-select: none;
+	-webkit-touch-callout: none;
+}
+.scene-wrap {
+	position: relative;
+	width: 100%;
+	height: max(430px, calc(var(--instinct-modal-height, 100vh) - 132px));
+	overflow: hidden;
+	background: #0b1a2a;
+	border-radius: 12px;
+}
+#stage {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	touch-action: none;
+}
+#scene {
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+#title {
+	position: absolute;
+	top: 14px;
+	left: 18px;
+	color: rgba(255,255,255,0.85);
+	text-shadow: 0 1px 6px rgba(0,0,0,0.45);
+	pointer-events: none;
+	user-select: none;
+}
+#title h1 {
+	margin: 0;
+	font-size: 17px;
+	font-weight: 600;
+	letter-spacing: 0.4px;
+}
+#title p {
+	margin: 2px 0 0;
+	font-size: 11px;
+	opacity: 0.7;
+	letter-spacing: 0.8px;
+}
+#hint {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	max-width: 33vw;
+	text-align: right;
+	font-size: 11px;
+	line-height: 1.5;
+	color: rgba(255,255,255,0.75);
+	text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+	pointer-events: none;
+	user-select: none;
+	transition: opacity 2.5s ease;
+}
+#hint.faded { opacity: 0; }
+#coach {
+	position: absolute;
+	bottom: 64px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 7px 16px;
+	border-radius: 999px;
+	background: rgba(10, 20, 30, 0.55);
+	border: 1px solid rgba(255, 233, 168, 0.45);
+	color: rgba(255, 238, 200, 0.95);
+	font-size: 12.5px;
+	letter-spacing: 0.3px;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-select: none;
+	z-index: 5;
+	transition: opacity 1.2s ease;
+	animation: coachGlow 2.2s ease-in-out infinite;
+}
+#coach.faded { opacity: 0; }
+@keyframes coachGlow {
+	0%, 100% { box-shadow: 0 0 0 rgba(255, 233, 168, 0); }
+	50% { box-shadow: 0 0 14px rgba(255, 233, 168, 0.35); }
+}
+@media (max-width: 480px) {
+	#coach { font-size: 11.5px; bottom: 60px; max-width: 86vw; white-space: normal; }
+}
+#seasons {
+	position: absolute;
+	bottom: 12px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 6px;
+	z-index: 5;
+}
+.chip {
+	border: 1px solid rgba(255,255,255,0.25);
+	background: rgba(10, 20, 30, 0.35);
+	color: rgba(255,255,255,0.8);
+	font-size: 12px;
+	padding: 5px 12px;
+	border-radius: 999px;
+	cursor: pointer;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+.chip:hover { background: rgba(255,255,255,0.18); }
+.chip.pinned::after {
+	content: "";
+	display: inline-block;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: currentColor;
+	margin-left: 6px;
+}
+.chip.active {
+	background: rgba(255,255,255,0.85);
+	color: #1d2b1f;
+	border-color: transparent;
+	font-weight: 600;
+}
+@media (max-width: 480px) {
+	#title h1 { font-size: 15px; }
+	#hint { display: none; }
+	.chip { font-size: 11px; padding: 4px 10px; }
+}
+#seasons { width: calc(100% - 16px); max-width: calc(100% - 16px); flex-wrap: wrap; justify-content: center; }
+.chip { touch-action: manipulation; }
+@supports (padding: env(safe-area-inset-bottom)) { #seasons { bottom: max(12px, env(safe-area-inset-bottom)); } }
+
+.chip { min-height: 44px; }
+.chip:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+.chip { color: #fff; background: rgba(10, 20, 30, 0.65); }
+.chip.active { color: #1d2b1f; background: rgba(255,255,255,0.9); }
+
+/* ---------- Age ruler: a lifetime on the left edge ---------- */
+#age-ruler {
+	position: absolute;
+	top: 118px;
+	bottom: 96px;
+	left: 12px;
+	width: 58px;
+	z-index: 6;
+	cursor: ns-resize;
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+}
+#age-ruler:focus-visible { outline: 2px solid rgba(255,255,255,0.8); outline-offset: 4px; border-radius: 10px; }
+#age-readout {
+	position: absolute;
+	top: -34px;
+	left: 0;
+	color: rgba(255,255,255,0.92);
+	text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+	pointer-events: none;
+	white-space: nowrap;
+}
+#age-readout span { font-size: 21px; font-weight: 700; letter-spacing: 0.5px; }
+#age-readout em { font-style: normal; font-size: 11px; opacity: 0.75; margin-left: 3px; }
+#age-track {
+	position: absolute;
+	top: 0; bottom: 0; left: 7px;
+	width: 3px;
+	background: rgba(255,255,255,0.28);
+	border-radius: 2px;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+#age-fill {
+	position: absolute;
+	bottom: 0; left: 0;
+	width: 100%;
+	background: rgba(255,255,255,0.85);
+	border-radius: 2px;
+}
+#age-knob {
+	position: absolute;
+	left: 50%;
+	width: 17px; height: 17px;
+	transform: translate(-50%, 50%);
+	background: #fff;
+	border-radius: 50%;
+	box-shadow: 0 1px 6px rgba(0,0,0,0.5);
+}
+#age-track .tick {
+	position: absolute;
+	left: 0;
+	height: 1px;
+	background: rgba(255,255,255,0.45);
+}
+#age-track .tick.minor { width: 7px; }
+#age-track .tick.major { width: 13px; background: rgba(255,255,255,0.65); }
+#age-track .tick.major span {
+	position: absolute;
+	left: 17px;
+	top: -6px;
+	font-size: 10px;
+	color: rgba(255,255,255,0.78);
+	text-shadow: 0 1px 3px rgba(0,0,0,0.55);
+	pointer-events: none;
+}
+@media (max-width: 480px) {
+	#age-ruler { top: 104px; bottom: 108px; left: 6px; width: 46px; }
+	#age-readout span { font-size: 17px; }
+	#age-track .tick.major span { font-size: 9px; left: 15px; }
+}
+
+/* Standalone (SoloLearn): fill the whole viewport instead of the card */
+.scene-wrap { height: 100vh; height: 100dvh; border-radius: 0; }
